@@ -1,15 +1,10 @@
 'use client';
-import React, { useState } from 'react'
-import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form';
+import React from 'react'
+import { useForm, SubmitHandler } from 'react-hook-form';
 
-type Inputs = {
-    questionType: string;
-    questionText: string;
-    questionAnswer: string;
-}
-
-type Questions = {
-    questions: Inputs[];
+type Quiz = {
+    rounds: number;
+    date: Date;
 }
 
 const QuizPage = () => {
@@ -17,64 +12,33 @@ const QuizPage = () => {
     const {
         register,
         handleSubmit,
-        control,
-        watch,
         formState: { errors }
-    } = useForm<Questions>({
+    } = useForm<Quiz>({
         defaultValues: {
-            questions: [
-                {
-                    questionType: "",
-                    questionText: "",
-                    questionAnswer: ""
-                }
-            ]
+            rounds: 8
         }
     })
-    const onSubmit: SubmitHandler<Questions> = (data) => console.log(data)
 
-    const { fields, append, remove } = useFieldArray({
-        name: 'questions',
-        control
-    })
+    const onSubmit: SubmitHandler<Quiz> = (data) => console.log(data);
 
     return (
-        <>
-            <h1>Create your Quiz</h1>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-center items-center">
-                <div className="flex flex-col w-9/12 border-opacity-50" >
-                {
-                    fields.map((field, index) => {
-                        return (
-                            <div className = "h-full card bg-base-300 rounded-box place-items-center p-4 mb-4" key={field.id}>
-                                <div className="label">
-                                    <span className='label-text'>What is the text for your question?</span>
-                                </div>
-                                <input type="text" {...register(`questions.${index}.questionText`)} placeholder='Type Here' className='input input-bordered w-full max-w-xs' />
-                                <div className='label'>
-                                    <span className='label-text'>What is the answer to your question?</span>
-                                </div>
-                                <input type="text" {...register(`questions.${index}.questionAnswer`)} placeholder='Type Here' className='input input-bordered w-full max-w-xs' />
-                                <div className='label'>
-                                    <span className='label-text'>What is the question type?</span>
-                                </div>
-                                <input type="text" {...register(`questions.${index}.questionType`)} placeholder='Type Here' className='input input-bordered w-full max-w-xs' />
-                                {
-                                    index > 0 &&
-                                        (
-                                            <button type="button" onClick={() => remove(index)}>Remove Question</button>
-                                        )
-                                }
-                            </div>
-                        )
-                    })
-                }
-                </div>
-                <button type="button" onClick={() => append({ questionType: '', questionAnswer: '', questionText: '' })}>Add Question</button>
-                <input type="submit" />
-            </form>
-        </>
-    )
+        <div className="max-w-xl mx-auto py-12 md:max-w-4xl">
+            <h1 className="text-2xl font-bold">Quiz Creation</h1>
+            <h3 className="mt-2 text-lg text-gray-600">Lets get started with building out your quiz!</h3>
+            <div className='mt-8 max-w-md'>
+                <form className='grid grid-cols-1 gap-6' onSubmit={handleSubmit(onSubmit)}>
+                    <label className='block'>
+                        <span className='text-gray-700'>Number of Rounds</span>
+                        <input className='mt-1 block w-full' placeholder='number of rounds' type='number'></input>
+                    </label>
+                    <label className='block'>
+                        <span className='text-gray-700'>Date of Quiz</span>
+                        <input className='mt-1 block w-full' type='date'></input>
+                    </label>
+                </form>
+            </div>
+        </div>
+  )
 }
 
 export default QuizPage
