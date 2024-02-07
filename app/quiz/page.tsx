@@ -14,7 +14,7 @@ const QuizPage = () => {
     const queryClient = useQueryClient();
 
     const {mutate: submitQuiz, isLoading} = useMutation({
-        mutationFn: async(quiz: Quiz) => await axios.post('/api/quiz/create', {
+        mutationFn: async(quiz: Quiz) => await axios.post('http://localhost:3001/api/quiz/create', {
             quiz: quiz
         }),
         onSuccess: () => {
