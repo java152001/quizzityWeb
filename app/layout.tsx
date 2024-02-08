@@ -5,6 +5,7 @@ import TanStackProvider from './components/providers/TanStackProvider';
 import { getServerSession } from 'next-auth';
 import Link from 'next/link';
 import Logout from './components/logout';
+import Navbar from './components/navbar/Navbar';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,17 +26,8 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <TanStackProvider>
-          <nav>
-            {!!session && 
-              <Logout />
-            }
-            {!session &&
-              <Link href='/api/auth/signin'>
-                Login
-              </Link>
-            }
+          <Navbar />
             {children}
-          </nav>
         </TanStackProvider>
       </body>
     </html>

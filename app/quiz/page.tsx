@@ -3,6 +3,7 @@ import React from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 type Quiz = {
     rounds: number;
@@ -11,17 +12,21 @@ type Quiz = {
 
 const QuizPage = () => {
 
-    const queryClient = useQueryClient();
+    const router = useRouter();
 
-    const {mutate: submitQuiz, isLoading} = useMutation({
+    const {mutate: submitQuiz} = useMutation({
         mutationFn: async(quiz: Quiz) => await axios.post('http://localhost:3001/api/quiz/create', {
             quiz: quiz
-        }),
+        }),  
         onSuccess: () => {
             console.log('post succeeded')
+            router.push('/questions');
             //queryClient.invalidateQueries(['currentQuiz'])
         },
-        onError: () => {console.log('post failed')}
+        onError: (err) => {
+            console.log('post failed')
+            console.error(err);
+        }
     })
 
     const {
