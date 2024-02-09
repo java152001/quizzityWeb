@@ -1,6 +1,8 @@
 'use client';
 import React from 'react'
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 type Inputs = {
     questionType: string;
@@ -13,6 +15,15 @@ type Questions = {
 }
 
 const QuestionsPage = () => {
+
+    const getQuizzes = async () => {
+        const res = await axios('http://localhost:3001/api/quiz/1');
+        return res.data;
+    }
+
+    const { data, error, isLoading } = useQuery("quizData", getQuizzes);
+
+    console.log(data);
 
     const {
         register,

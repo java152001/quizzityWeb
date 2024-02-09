@@ -4,12 +4,14 @@ import axios from 'axios';
 
 export async function POST(request: Request){
     try {
-        const { email, password } = await request.json();
+        const { email, password, firstName, lastName } = await request.json();
         // validate
 
         const hashedPassword = await hash(password, 10);
 
         const response = await axios.post('http://localhost:3001/api/user/register', {
+            firstName,
+            lastName,
             email,
             password: hashedPassword
         });
